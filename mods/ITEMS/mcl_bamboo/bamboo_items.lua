@@ -252,6 +252,8 @@ if minetest.get_modpath("screwdriver") then
 	disallow_on_rotate = screwdriver.disallow
 end
 
+local Breaking_In_Progress = false
+
 minetest.register_node(SCAFFOLDING_NAME, {
 	description = S("Scaffolding"),
 	doc_items_longdesc = S("Scaffolding block used to climb up or out across areas."),
@@ -382,20 +384,27 @@ minetest.register_node(SCAFFOLDING_NAME, {
 	end,
 	on_destruct = function(pos)
 		-- Node destructor; called before removing node.
-		local new_pos = vector.offset(pos, 0, 1, 0)
-		local node_above = minetest.get_node(new_pos)
-		if node_above and node_above.name == SCAFFOLDING_NAME then
+		if Breaking_In_Progress then return end
+		Breaking_In_Progress = true
+		local y = 1
+		while true do
+			local new_pos = vector.offset(pos, 0, y, 0)
+			local node = core.get_node(new_pos)
+			if not node or node.name ~= SCAFFOLDING_NAME then
+				break
+			end
 			local sound_params = {
 				pos = new_pos,
 				gain = 1.0, -- default
 				max_hear_distance = 10, -- default, uses a Euclidean metric
 			}
-
-			minetest.remove_node(new_pos)
-			minetest.sound_play(node_sound.dug, sound_params, true)
+			core.remove_node(new_pos)
+			core.sound_play(node_sound.dug, sound_params, true)
 			local istack = ItemStack(SCAFFOLDING_NAME)
-			minetest.add_item(new_pos, istack)
+			core.add_item(new_pos, istack)
+			y = y + 1
 		end
+		Breaking_In_Progress = false
 	end,
 })
 
