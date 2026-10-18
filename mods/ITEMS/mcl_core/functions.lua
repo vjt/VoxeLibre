@@ -1116,11 +1116,11 @@ minetest.register_abm({
 	interval = 16,
 	chance = 8,
 	action = function(pos, node)
-		if minetest.get_node_light(pos, 0) >= 12 then
+		if (core.get_node_light(pos, 0) or 0) >= 12 then
 			if node.name == "mcl_core:ice" then
 				mcl_core.melt_ice(pos)
 			else
-				minetest.remove_node(pos)
+				core.remove_node(pos)
 			end
 		end
 	end
