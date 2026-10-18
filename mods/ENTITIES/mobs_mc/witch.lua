@@ -7,6 +7,8 @@ local S = minetest.get_translator("mobs_mc")
 --################### WITCH
 --###################
 
+local BLEND_MODE = core.features.particle_blend_clip and "clip" or "alpha"
+
 local UP = vector.new(0, 1, 0)
 local wand_rotation = vector.new(0, 0, 45)
 local potion_rotation = vector.new(90, 45, 90)
@@ -87,7 +89,7 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 					texture = {
 						name = "mcl_particles_instant_effect.png^[colorize:#AF00FF",
 						scale_tween = { 0.2, 1 },
-						blend = "clip"
+						blend = BLEND_MODE
 					},
 					exptime = 2,
 					attract = {
