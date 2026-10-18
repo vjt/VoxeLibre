@@ -141,3 +141,8 @@ Eating and drinking on touchscreen devices should now work better thanks to Hero
 
 ## 0.92.3 hotfix
 * Fixed some problematic textures – by Lifora and Herowl
+
+
+## 0.92.4 hotfix
+* Fixed the crash happening with Luanti 5.10 – by Herowl
+* Fixed a few incredibly rare crashes – by Herowl
