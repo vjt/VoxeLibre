@@ -119,6 +119,11 @@ mcl_hand_range_creative (Creative mode hand range) float 10 1 128
 # Creative mode dig speed in seconds
 mcl_creative_dig_speed (Creative mode dig speed) float 0.2
 
+# Put the cursor in the search field when the creative inventory opens on the
+# search tab. Disable it when playing with a gamepad mapped to keys: a focused
+# field takes the inventory key as text, so the inventory does not close.
+mcl_creative_search_autofocus (Focus the creative search field) bool true
+
 # If enabled the hunger mechanic will be active
 mcl_enable_hunger (Hunger mechanic) bool true
 

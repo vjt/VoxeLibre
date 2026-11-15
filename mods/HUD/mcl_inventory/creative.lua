@@ -5,6 +5,10 @@ local S = minetest.get_translator(mod_name)
 local F = minetest.formspec_escape
 local C = minetest.colorize
 
+-- With a gamepad mapped to keys there is no keyboard to type a search, and a
+-- focused search field swallows the inventory key: the inventory cannot be closed.
+local search_autofocus = minetest.settings:get_bool("mcl_creative_search_autofocus", true)
+
 -- Prepare player info table
 ---@type table<string, {page: string, filter: string, start_i: integer, inv_size: integer}>
 local players = {}
@@ -1067,6 +1071,11 @@ function mcl_inventory.set_creative_formspec(player)
 
 		listrings,
 
+		-- Without autofocus the search tab button takes the focus, otherwise
+		-- Luanti would give it to the first empty field anyway. It has to come
+		-- before the button it names.
+		(name == "nix" and not search_autofocus) and "set_focus[nix;true]" or "",
+
 		tab(name, "blocks") ..
 		"tooltip[blocks;"..F(filtername["blocks"]).."]"..
 		tab(name, "deco") ..
@@ -1105,7 +1114,7 @@ function mcl_inventory.set_creative_formspec(player)
 			"field[5.325,0.15;6.1,0.6;search;;" .. minetest.formspec_escape(filter) .. "]",
 			"field_close_on_enter[search;false]",
 			"field_enter_after_edit[search;true]",
-			"set_focus[search;true]",
+			search_autofocus and "set_focus[search;true]" or "",
 		})
 	end
 	formspec = formspec .. "container_end[]"
